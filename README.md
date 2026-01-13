@@ -23,25 +23,130 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NestJS backend application built with TypeScript strict mode, Sequelize ORM, MySQL database, DTO-based validation, and Flutter-friendly JSON API responses.
 
-## Project setup
+## Features
 
-```bash
-$ npm install
+- ✅ **TypeScript Strict Mode**: Full type safety with strict compiler options
+- ✅ **Sequelize + MySQL**: Type-safe ORM with MySQL database
+- ✅ **DTO-based Validation**: Request validation using class-validator
+- ✅ **Service-only Business Logic**: Clean separation of concerns
+- ✅ **Flutter-friendly API**: Consistent JSON response format
+- ✅ **Global Exception Handling**: Standardized error responses
+- ✅ **CORS Enabled**: Ready for Flutter mobile app integration
+
+## Project Structure
+
+```
+src/
+├── common/              # Shared utilities
+│   ├── filters/         # Exception filters
+│   ├── interceptors/    # Response transformers
+│   └── interfaces/      # Type definitions
+├── config/              # Configuration files
+├── database/            # Database setup and migrations
+├── word-pairs/          # Word pairs feature module
+│   ├── dto/             # Data Transfer Objects
+│   ├── entities/        # Sequelize models
+│   ├── word-pairs.controller.ts
+│   ├── word-pairs.service.ts
+│   └── word-pairs.module.ts
+└── main.ts              # Application entry point
 ```
 
-## Compile and run the project
+## Prerequisites
+
+- Node.js (v18 or higher)
+- MySQL (v8.0 or higher)
+- npm or yarn
+
+## Project Setup
+
+1. **Install dependencies:**
+```bash
+npm install
+```
+
+2. **Configure environment variables:**
+Create a `.env` file in the root directory:
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=your_password
+DB_DATABASE=word_pair_db
+PORT=3000
+NODE_ENV=development
+```
+
+3. **Create database:**
+```sql
+CREATE DATABASE word_pair_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+4. **Run migrations:**
+Execute the SQL migration file:
+```bash
+mysql -u root -p word_pair_db < src/database/migrations/001-create-word-pairs.sql
+```
+
+## Running the Application
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
+# development mode
+npm run start:dev
 
 # production mode
-$ npm run start:prod
+npm run start:prod
+```
+
+The API will be available at `http://localhost:3000`
+
+## API Endpoints
+
+### Word Pairs
+
+- `POST /word-pairs` - Create a new word pair
+- `GET /word-pairs` - Get all word pairs
+- `GET /word-pairs/:id` - Get a word pair by ID
+- `PATCH /word-pairs/:id` - Update a word pair
+- `DELETE /word-pairs/:id` - Delete a word pair
+
+### Request/Response Format
+
+**Create Word Pair:**
+```json
+POST /word-pairs
+{
+  "word1": "Hello",
+  "word2": "World",
+  "description": "A common greeting pair"
+}
+```
+
+**Success Response:**
+```json
+{
+  "success": true,
+  "message": "Operation successful",
+  "data": {
+    "id": 1,
+    "word1": "Hello",
+    "word2": "World",
+    "description": "A common greeting pair",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+**Error Response:**
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "error": "Bad Request"
+}
 ```
 
 ## Run tests
