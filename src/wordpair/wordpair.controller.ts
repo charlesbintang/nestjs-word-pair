@@ -1,0 +1,52 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { WordPairService } from './wordpair.service';
+import { CreateWordPairDto } from './dto/create-wordpair.dto';
+import { UpdateWordPairDto } from './dto/update-wordpair.dto';
+
+@Controller('wordpairs')
+export class WordPairController {
+  constructor(private readonly wordPairService: WordPairService) {}
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() createWordPairDto: CreateWordPairDto) {
+    return this.wordPairService.create(createWordPairDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.wordPairService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.wordPairService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateWordPairDto: UpdateWordPairDto) {
+    return this.wordPairService.update(id, updateWordPairDto);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string) {
+    return this.wordPairService.remove(id);
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeAll() {
+    return this.wordPairService.removeAll();
+  }
+}

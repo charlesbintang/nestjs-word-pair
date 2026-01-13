@@ -23,69 +23,159 @@
 
 ## Description
 
-NestJS backend application built with TypeScript strict mode, Sequelize ORM, MySQL database, DTO-based validation, and Flutter-friendly JSON API responses.
+NestJS WordPair API - Backend untuk menyimpan data wordpair dari aplikasi Flutter.
 
-## Features
+API ini menyediakan endpoint REST untuk melakukan CRUD (Create, Read, Update, Delete) operasi pada wordpair. Data disimpan dalam memori (in-memory storage) dengan fitur auto-generate ID dan timestamp.
 
-- ✅ **TypeScript Strict Mode**: Full type safety with strict compiler options
-- ✅ **Sequelize + MySQL**: Type-safe ORM with MySQL database
-- ✅ **DTO-based Validation**: Request validation using class-validator
-- ✅ **Service-only Business Logic**: Clean separation of concerns
-- ✅ **Flutter-friendly API**: Consistent JSON response format
-- ✅ **Global Exception Handling**: Standardized error responses
-- ✅ **CORS Enabled**: Ready for Flutter mobile app integration
+## API Endpoints
 
-## Project Structure
+Base URL: `http://localhost:3000`
 
-```
-src/
-├── common/              # Shared utilities
-│   ├── filters/         # Exception filters
-│   ├── interceptors/    # Response transformers
-│   └── interfaces/      # Type definitions
-├── config/              # Configuration files
-├── database/            # Database setup and migrations
-├── word-pairs/          # Word pairs feature module
-│   ├── dto/             # Data Transfer Objects
-│   ├── entities/        # Sequelize models
-│   ├── word-pairs.controller.ts
-│   ├── word-pairs.service.ts
-│   └── word-pairs.module.ts
-└── main.ts              # Application entry point
+### WordPairs
+
+#### 1. Membuat WordPair Baru
+```http
+POST /wordpairs
+Content-Type: application/json
+
+{
+  "firstWord": "Hello",
+  "secondWord": "World",
+  "category": "greeting" // optional
+}
 ```
 
-## Prerequisites
-
-- Node.js (v18 or higher)
-- MySQL (v8.0 or higher)
-- npm or yarn
-
-## Project Setup
-
-1. **Install dependencies:**
-```bash
-npm install
+**Response:**
+```json
+{
+  "id": "1234567890-abc123",
+  "firstWord": "Hello",
+  "secondWord": "World",
+  "category": "greeting",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T00:00:00.000Z"
+}
 ```
 
-2. **Configure environment variables:**
-Create a `.env` file in the root directory:
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=your_password
-DB_DATABASE=word_pair_db
-PORT=3000
-NODE_ENV=development
+#### 2. Mendapatkan Semua WordPairs
+```http
+GET /wordpairs
 ```
 
-3. **Create database:**
-```sql
-CREATE DATABASE word_pair_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+**Response:**
+```json
+[
+  {
+    "id": "1234567890-abc123",
+    "firstWord": "Hello",
+    "secondWord": "World",
+    "category": "greeting",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+]
 ```
 
-4. **Run migrations:**
-Execute the SQL migration file:
+#### 3. Mendapatkan WordPair Berdasarkan ID
+```http
+GET /wordpairs/:id
+```
+
+**Response:**
+```json
+{
+  "id": "1234567890-abc123",
+  "firstWord": "Hello",
+  "secondWord": "World",
+  "category": "greeting",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T00:00:00.000Z"
+}
+```
+
+#### 4. Update WordPair
+```http
+PATCH /wordpairs/:id
+Content-Type: application/json
+
+{
+  "firstWord": "Hi", // optional
+  "secondWord": "There", // optional
+  "category": "greeting" // optional
+}
+```
+
+**Response:**
+```json
+{
+  "id": "1234567890-abc123",
+  "firstWord": "Hi",
+  "secondWord": "There",
+  "category": "greeting",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T01:00:00.000Z"
+}
+```
+
+#### 5. Hapus WordPair
+```http
+DELETE /wordpairs/:id
+```
+
+**Response:** `204 No Content`
+
+#### 6. Hapus Semua WordPairs
+```http
+DELETE /wordpairs
+```
+
+**Response:** `204 No Content`
+
+## Contoh Penggunaan dari Flutter
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+// Membuat wordpair baru
+Future<void> createWordPair(String firstWord, String secondWord) async {
+  final response = await http.post(
+    Uri.parse('http://localhost:3000/wordpairs'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'firstWord': firstWord,
+      'secondWord': secondWord,
+    }),
+  );
+  
+  if (response.statusCode == 201) {
+    print('WordPair created successfully');
+  }
+}
+
+// Mendapatkan semua wordpairs
+Future<List<Map<String, dynamic>>> getAllWordPairs() async {
+  final response = await http.get(
+    Uri.parse('http://localhost:3000/wordpairs'),
+  );
+  
+  if (response.statusCode == 200) {
+    return List<Map<String, dynamic>>.from(jsonDecode(response.body));
+  }
+  return [];
+}
+```
+
+## Catatan Penting
+
+- Data disimpan dalam memori (in-memory storage), data akan hilang saat server di-restart
+- Setiap wordpair memiliki ID yang auto-generated dan timestamp (createdAt, updatedAt)
+- Input data divalidasi secara otomatis menggunakan class-validator
+- CORS sudah diaktifkan untuk memungkinkan akses dari aplikasi Flutter yang berjalan di browser
+- Untuk aplikasi Flutter web di browser, gunakan `http://localhost:3000` atau IP server Anda
+
+## Project setup
+
 ```bash
 mysql -u root -p word_pair_db < src/database/migrations/001-create-word-pairs.sql
 ```
