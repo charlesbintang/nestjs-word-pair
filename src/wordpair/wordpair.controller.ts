@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateWordPairDto } from './dto/create-wordpair.dto';
 import { UpdateWordPairDto } from './dto/update-wordpair.dto';
@@ -24,8 +25,12 @@ export class WordPairController {
   }
 
   @Get()
-  findAll() {
-    return this.wordPairService.findAll();
+  findAll(
+    @Query('firstWord') firstWord?: string,
+    @Query('secondWord') secondWord?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.wordPairService.findAll(firstWord, secondWord, category);
   }
 
   @Get(':id')

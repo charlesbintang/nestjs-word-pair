@@ -23,8 +23,28 @@ export class WordPairService {
     return newWordPair;
   }
 
-  findAll(): WordPair[] {
-    return this.wordPairs;
+  findAll(
+    firstWord?: string,
+    secondWord?: string,
+    category?: string,
+  ): WordPair[] {
+    if (!firstWord && !secondWord && !category) {
+      return this.wordPairs;
+    }
+
+    return this.wordPairs.filter((wp) => {
+      const matchFirstWord =
+        !firstWord ||
+        wp.firstWord.toLowerCase().includes(firstWord.toLowerCase());
+      const matchSecondWord =
+        !secondWord ||
+        wp.secondWord.toLowerCase().includes(secondWord.toLowerCase());
+      const matchCategory =
+        !category ||
+        wp.category?.toLowerCase().includes(category.toLowerCase());
+
+      return matchFirstWord && matchSecondWord && matchCategory;
+    });
   }
 
   findOne(id: string): WordPair {
