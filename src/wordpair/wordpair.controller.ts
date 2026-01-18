@@ -1,17 +1,17 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { WordPairService } from './wordpair.service';
 import { CreateWordPairDto } from './dto/create-wordpair.dto';
 import { UpdateWordPairDto } from './dto/update-wordpair.dto';
+import { WordPairService } from './wordpair.service';
 
 @Controller('wordpairs')
 export class WordPairController {
@@ -34,7 +34,10 @@ export class WordPairController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWordPairDto: UpdateWordPairDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateWordPairDto: UpdateWordPairDto,
+  ) {
     return this.wordPairService.update(id, updateWordPairDto);
   }
 

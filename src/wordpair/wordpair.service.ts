@@ -11,7 +11,7 @@ export class WordPairService {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  async create(createWordPairDto: CreateWordPairDto): Promise<WordPair> {
+  create(createWordPairDto: CreateWordPairDto): WordPair {
     const newWordPair: WordPair = {
       id: this.generateId(),
       ...createWordPairDto,
@@ -23,11 +23,11 @@ export class WordPairService {
     return newWordPair;
   }
 
-  async findAll(): Promise<WordPair[]> {
+  findAll(): WordPair[] {
     return this.wordPairs;
   }
 
-  async findOne(id: string): Promise<WordPair> {
+  findOne(id: string): WordPair {
     const wordPair = this.wordPairs.find((wp) => wp.id === id);
     if (!wordPair) {
       throw new NotFoundException(`WordPair with ID ${id} not found`);
@@ -35,7 +35,7 @@ export class WordPairService {
     return wordPair;
   }
 
-  async update(id: string, updateWordPairDto: UpdateWordPairDto): Promise<WordPair> {
+  update(id: string, updateWordPairDto: UpdateWordPairDto): WordPair {
     const index = this.wordPairs.findIndex((wp) => wp.id === id);
     if (index === -1) {
       throw new NotFoundException(`WordPair with ID ${id} not found`);
@@ -48,7 +48,7 @@ export class WordPairService {
     return this.wordPairs[index];
   }
 
-  async remove(id: string): Promise<void> {
+  remove(id: string): void {
     const index = this.wordPairs.findIndex((wp) => wp.id === id);
     if (index === -1) {
       throw new NotFoundException(`WordPair with ID ${id} not found`);
@@ -56,7 +56,7 @@ export class WordPairService {
     this.wordPairs.splice(index, 1);
   }
 
-  async removeAll(): Promise<void> {
+  removeAll(): void {
     this.wordPairs = [];
   }
 }
