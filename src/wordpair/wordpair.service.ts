@@ -74,6 +74,7 @@ export class WordPairService {
       throw new NotFoundException(`WordPair with ID ${id} not found`);
     }
     this.wordPairs.splice(index, 1);
+    console.log(`Remove WordPair with ID ${id}`);
   }
 
   removeAll(): void {
