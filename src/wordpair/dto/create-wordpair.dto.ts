@@ -3,11 +3,11 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class CreateWordPairDto {
   @IsString()
   @IsNotEmpty()
-  firstWord: string;
+  firstWord!: string;
 
   @IsString()
   @IsNotEmpty()
-  secondWord: string;
+  secondWord!: string;
 
   @IsString()
   @IsOptional()

@@ -1,8 +1,8 @@
 export class WordPair {
-  id: string;
-  firstWord: string;
-  secondWord: string;
+  id!: string;
+  firstWord!: string;
+  secondWord!: string;
   category?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
 }
