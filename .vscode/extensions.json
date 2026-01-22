@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "rvest.vs-code-prettier-eslint",
+        "pkief.material-icon-theme",
+        "dbaeumer.vscode-eslint"
+    ]
+}
