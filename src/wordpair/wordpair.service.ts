@@ -40,8 +40,7 @@ export class WordPairService {
         !secondWord ||
         wp.secondWord.toLowerCase().includes(secondWord.toLowerCase());
       const matchCategory =
-        !category ||
-        wp.category?.toLowerCase().includes(category.toLowerCase());
+        !category || wp.category.toLowerCase().includes(category.toLowerCase());
 
       return matchFirstWord && matchSecondWord && matchCategory;
     });
