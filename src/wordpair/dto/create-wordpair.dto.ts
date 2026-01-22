@@ -1,6 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateWordPairDto {
+  @IsString()
+  @IsNotEmpty()
+  clientId!: string;
+
   @IsString()
   @IsNotEmpty()
   firstWord!: string;
@@ -10,6 +14,6 @@ export class CreateWordPairDto {
   secondWord!: string;
 
   @IsString()
-  @IsOptional()
-  category?: string;
+  @IsNotEmpty()
+  category!: string;
 }
