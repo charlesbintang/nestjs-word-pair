@@ -46,10 +46,14 @@ export class WordPairService {
     });
   }
 
-  findOne(id: string): WordPair {
-    const wordPair = this.wordPairs.find((wp) => wp.id === id);
+  findOne(id?: string, clientId?: string): WordPair {
+    const wordPair = this.wordPairs.find(
+      (wp) => wp.id === id || wp.clientId === clientId,
+    );
     if (!wordPair) {
-      throw new NotFoundException(`WordPair with ID ${id} not found`);
+      throw new NotFoundException(
+        `WordPair with ID ${id} or Client ID ${clientId} not found`,
+      );
     }
     return wordPair;
   }
